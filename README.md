@@ -8,29 +8,24 @@ System requirements
 * Git
 * RVM
 
-Installation
-------------
+Usage
+-----
 
 Developers:
 
 ```shell
-cd
-git clone git@github.com:xcopy/dieselup-ruby.git dieselup
-cd dieselup
-bundle
+$ cd
+$ git clone git@github.com:xcopy/dieselup-ruby.git dieselup
+$ cd dieselup
+$ bundle
+$ USERNAME=your-username PASSWORD=your-password bundle exec bin/dieselup <your-topic-ID>
 ```
 
 Common users:
 
 ```shell
-gem install dieselup --no-ri --no-rdoc
-```
-
-Usage
------
-
-```shell
-USERNAME=your-username PASSWORD=your-password dieselup <your-topic-ID>
+$ gem install dieselup --no-ri --no-rdoc
+$ USERNAME=your-username PASSWORD=your-password dieselup <your-topic-ID>
 ```
 
 Cron task example:
