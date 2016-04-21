@@ -18,7 +18,7 @@ describe Dieselup do
   context Dieselup::Url do
     it 'returns correct URLs' do
       expect(Dieselup::Url::BASE).to eq 'https://diesel.elcat.kg/index.php'
-      expect(Dieselup::Url.get({showtopic: 1})).to eq 'https://diesel.elcat.kg/index.php?showtopic=1'
+      expect(Dieselup::Url.get(showtopic: 1)).to eq 'https://diesel.elcat.kg/index.php?showtopic=1'
     end
   end
 
@@ -31,7 +31,7 @@ describe Dieselup do
     end
 
     it 'should send GET request and get response with error message' do
-      response = @base.request(Dieselup::Url.get({showtopic: 1234567890}))
+      response = @base.request(Dieselup::Url.get(showtopic: 1234567890))
       document = Nokogiri::HTML(response.body)
       errors = document.css('div.errorwrap')
 
@@ -41,7 +41,7 @@ describe Dieselup do
 
 
     it 'should send POST request and get successful response' do
-      url = Dieselup::Url.get({act: 'Login', CODE: '01'})
+      url = Dieselup::Url.get(act: 'Login', CODE: '01')
       params = {UserName: ENV['USERNAME'], PassWord: ENV['PASSWORD']}
       response = @base.request(url, 'POST', params)
       document = Nokogiri::HTML(response.body)

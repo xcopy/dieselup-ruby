@@ -14,7 +14,7 @@ module Dieselup
       document = Nokogiri::HTML(response.body)
 
       if document.css('div#userlinks').empty?
-        url = Dieselup::Url.get({act: 'Login', CODE: '01'})
+        url = Dieselup::Url.get(act: 'Login', CODE: '01')
         params = {UserName: ENV['USERNAME'], PassWord: ENV['PASSWORD']}
         request(url, 'POST', params)
       end
