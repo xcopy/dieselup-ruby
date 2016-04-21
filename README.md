@@ -1,4 +1,4 @@
-DIESELUP [![Build Status](https://travis-ci.org/xcopy/dieselup-ruby.svg?branch=master)](https://travis-ci.org/xcopy/dieselup-ruby)
+DIESELUP [![Build Status](https://travis-ci.org/xcopy/dieselup-ruby.svg?branch=master)](https://travis-ci.org/xcopy/dieselup-ruby) [![Gem Version](https://badge.fury.io/rb/dieselup.svg)](https://badge.fury.io/rb/dieselup)
 ========
 
 System requirements
