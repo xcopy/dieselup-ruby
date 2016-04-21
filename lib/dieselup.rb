@@ -1,3 +1,5 @@
+require 'uri'
+require 'net/http'
 require 'nokogiri'
 require 'dotenv'
 
