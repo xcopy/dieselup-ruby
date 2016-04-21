@@ -31,7 +31,10 @@ $ USERNAME=your-username PASSWORD=your-password dieselup <your-topic-ID>
 Cron task example:
 
 ```shell
-*/1 * * * * USERNAME=your-username PASSWORD=your-password dieselup <your-topic-ID> > /dev/null 2>&1
+USERNAME=your-username
+PASSWORD=your-password
+...
+*/1 * * * * dieselup <your-topic-ID> > /dev/null 2>&1
 ```
 
 That's it!
