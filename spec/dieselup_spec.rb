@@ -41,9 +41,7 @@ describe Dieselup do
 
 
     it 'should send POST request and get successful response' do
-      url = Dieselup::Url.get(act: 'Login', CODE: '01')
-      params = {UserName: ENV['USERNAME'], PassWord: ENV['PASSWORD']}
-      response = @base.request(url, 'POST', params)
+      response = @base.login
       document = Nokogiri::HTML(response.body)
 
       expect(response.code).to eq '200'
