@@ -1,3 +1,5 @@
+require 'nokogiri'
+
 module Dieselup
   class Base
     def self.up!
@@ -6,12 +8,16 @@ module Dieselup
     end
 
     def self.login
+      response = request(Dieselup::Url::BASE)
+      document = Nokogiri::HTML(response.body)
+
+      if document.css('div#userlinks').empty?
+        # todo
+      end
     end
 
     def self.post
     end
-
-    private
 
     def self.request(url, method = Net::HTTP::Get::METHOD, body = nil)
       uri = URI.parse(url)

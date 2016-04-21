@@ -5,24 +5,28 @@ describe Dieselup do
     expect(Dieselup::VERSION).not_to be nil
   end
 
-  it 'has correct URLs' do
-    expect(Dieselup::Url::BASE).to eq 'https://diesel.elcat.kg/index.php'
-    expect(Dieselup::Url.get({showtopic: 1})).to eq 'https://diesel.elcat.kg/index.php?showtopic=1'
+  context Dieselup::Url do
+    it 'returns correct URLs' do
+      expect(Dieselup::Url::BASE).to eq 'https://diesel.elcat.kg/index.php'
+      expect(Dieselup::Url.get({showtopic: 1})).to eq 'https://diesel.elcat.kg/index.php?showtopic=1'
+    end
   end
 
-  it 'should send request' do
-    url = URI.parse(Dieselup::Url::BASE)
-    http = Net::HTTP.new(url.host, url.port)
+  context Dieselup::Base do
+    it 'should send GET request and get successful response' do
+      response = Dieselup::Base.request(Dieselup::Url::BASE)
 
-    if url.scheme == 'https'
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      expect(response.code).to eq '200'
+      expect(response.content_type).to eq 'text/html'
     end
 
-    request = Net::HTTP::Get.new(url.to_s)
-    response = http.request(request)
+    it 'should send GET request and get response with error message' do
+      response = Dieselup::Base.request(Dieselup::Url.get({showtopic: 1234567890}))
+      document = Nokogiri::HTML(response.body)
+      errors = document.css('div.errorwrap')
 
-    expect(response.code).to eq '200'
-    expect(response.content_type).to eq 'text/html'
+      expect(errors).not_to be_empty
+      expect(errors.first).to be_instance_of Nokogiri::XML::Element
+    end
   end
 end
