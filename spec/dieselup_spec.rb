@@ -2,7 +2,13 @@ require 'spec_helper'
 
 describe Dieselup do
   it 'has a version number' do
-    expect(Dieselup::VERSION).not_to be nil
+    expect(Dieselup::VERSION).not_to be_nil
+  end
+
+  it 'has environment .env file' do
+    expect(File.exist?('.env')).to be_truthy
+    expect(ENV['USERNAME']).to_not be_nil
+    expect(ENV['PASSWORD']).to_not be_nil
   end
 
   context Dieselup::Url do
@@ -27,6 +33,17 @@ describe Dieselup do
 
       expect(errors).not_to be_empty
       expect(errors.first).to be_instance_of Nokogiri::XML::Element
+    end
+
+
+    it 'should send POST request and get successful response' do
+      url = Dieselup::Url.get({act: 'Login', CODE: '01'})
+      params = {UserName: ENV['USERNAME'], PassWord: ENV['PASSWORD']}
+      response = Dieselup::Base.request(url, 'POST', params)
+      document = Nokogiri::HTML(response.body)
+
+      expect(response.code).to eq '200'
+      expect(document.at("p:contains(#{ENV['USERNAME']})")).to_not be_nil
     end
   end
 end

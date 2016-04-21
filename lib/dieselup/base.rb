@@ -12,22 +12,23 @@ module Dieselup
       document = Nokogiri::HTML(response.body)
 
       if document.css('div#userlinks').empty?
-        # todo
+        url = Dieselup::Url.get({act: 'Login', CODE: '01'})
+        params = {UserName: ENV['USERNAME'], PassWord: ENV['PASSWORD']}
+        request(url, 'POST', params)
       end
     end
 
     def self.post
     end
 
-    def self.request(url, method = Net::HTTP::Get::METHOD, body = nil)
+    def self.request(url, method = 'GET', params = {})
       uri = URI.parse(url)
 
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-      request = Net::HTTP::Get.new(uri.to_s)
-      response = http.request(request)
+      response = if method.upcase == 'POST'
+        Net::HTTP.post_form(uri, params)
+      else
+        Net::HTTP.get_response(uri)
+      end
 
       response
     end
