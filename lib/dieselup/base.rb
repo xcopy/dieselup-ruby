@@ -56,10 +56,10 @@ module Dieselup
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       if method.upcase == 'POST'
-        request = Net::HTTP::Post.new(uri)
+        request = Net::HTTP::Post.new(uri.request_uri)
         request.set_form_data(params)
       else
-        request = Net::HTTP::Get.new(uri)
+        request = Net::HTTP::Get.new(uri.request_uri)
       end
 
       unless @cookies.empty?
