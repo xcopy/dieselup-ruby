@@ -1,9 +1,8 @@
 module Dieselup
   class Base
-    attr_reader :cookies
+    attr_accessor :cookies
 
     def initialize
-      Dotenv.load('.env')
       @cookies = []
     end
 

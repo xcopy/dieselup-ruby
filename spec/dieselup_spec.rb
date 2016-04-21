@@ -44,10 +44,13 @@ describe Dieselup do
     end
 
     it 'should raise error' do
+      @base.cookies = []
+      ENV['USERNAME'] = nil
       ARGV.clear
 
       expect { @base.request(Dieselup::Url.get(showtopic: 1)) }.to raise_error(StandardError)
       expect { @base.post }.to raise_error(ArgumentError)
+      expect { @base.login }.to raise_error(StandardError)
     end
   end
 end
