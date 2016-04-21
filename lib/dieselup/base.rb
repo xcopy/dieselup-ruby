@@ -53,7 +53,7 @@ module Dieselup
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = uri.scheme == 'https'
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      http.verify_mode = 0
 
       if method.upcase == 'POST'
         request = Net::HTTP::Post.new(uri.request_uri)
