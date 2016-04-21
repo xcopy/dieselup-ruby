@@ -26,6 +26,8 @@ module Dieselup
     end
 
     def post
+      raise ArgumentError, 'Not enough arguments' unless ARGV.any?
+
       response = request(Dieselup::Url.get(showtopic: ARGV.first))
       document = Nokogiri::HTML(response.body)
 
@@ -66,6 +68,12 @@ module Dieselup
       end
 
       response = http.request(request)
+
+      document = Nokogiri::HTML(response.body)
+
+      errors = document.xpath('//div[@class="errorwrap"]/p')
+
+      raise StandardError, errors.first.text if errors.any?
 
       cookies = response.get_fields('set-cookie')
       cookies.each do |cookie|

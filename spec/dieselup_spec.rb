@@ -43,13 +43,11 @@ describe Dieselup do
       expect(document.at("a:contains(#{ENV['USERNAME']})")).to_not be_nil
     end
 
-    it 'should send GET request and get response with error message' do
-      response = @base.request(Dieselup::Url.get(showtopic: 1))
-      document = Nokogiri::HTML(response.body)
-      errors = document.css('div.errorwrap')
+    it 'should raise error' do
+      ARGV.clear
 
-      expect(errors).not_to be_empty
-      expect(errors.first).to be_instance_of Nokogiri::XML::Element
+      expect { @base.request(Dieselup::Url.get(showtopic: 1)) }.to raise_error(StandardError)
+      expect { @base.post }.to raise_error(ArgumentError)
     end
   end
 end
