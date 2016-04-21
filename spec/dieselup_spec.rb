@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe Dieselup do
+  before(:all) do
+    @base = Dieselup::Base.new
+  end
+
   it 'has a version number' do
     expect(Dieselup::VERSION).not_to be_nil
   end
@@ -20,14 +24,14 @@ describe Dieselup do
 
   context Dieselup::Base do
     it 'should send GET request and get successful response' do
-      response = Dieselup::Base.request(Dieselup::Url::BASE)
+      response = @base.request(Dieselup::Url::BASE)
 
       expect(response.code).to eq '200'
       expect(response.content_type).to eq 'text/html'
     end
 
     it 'should send GET request and get response with error message' do
-      response = Dieselup::Base.request(Dieselup::Url.get({showtopic: 1234567890}))
+      response = @base.request(Dieselup::Url.get({showtopic: 1234567890}))
       document = Nokogiri::HTML(response.body)
       errors = document.css('div.errorwrap')
 
@@ -39,7 +43,7 @@ describe Dieselup do
     it 'should send POST request and get successful response' do
       url = Dieselup::Url.get({act: 'Login', CODE: '01'})
       params = {UserName: ENV['USERNAME'], PassWord: ENV['PASSWORD']}
-      response = Dieselup::Base.request(url, 'POST', params)
+      response = @base.request(url, 'POST', params)
       document = Nokogiri::HTML(response.body)
 
       expect(response.code).to eq '200'

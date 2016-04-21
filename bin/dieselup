@@ -2,4 +2,5 @@
 
 require 'dieselup'
 
-Dieselup::Base.up!
+base = Dieselup::Base.new
+base.up!
