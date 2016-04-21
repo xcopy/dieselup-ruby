@@ -1,6 +1,5 @@
 language: ruby
 rvm:
-  - 1.8.7
   - 1.9.3
   - 2.2.0
 env:
@@ -9,3 +8,4 @@ env:
   - secure: EhmtN6vkMP16r3bLIBeqOJs0lXYbEdg1KVygYV26dA7SA4SvGuUBXvWbVHwbblGS9UNnb2QkdYvURDGULtvN5gQ93Kp5IqUxT7mPlh3jURKL5g3YZ2H3YWTnyE7EF0sC2I69Z5R3Bew6Yy74MAXtpOP2HTo24cnCo36lVuwDWP8LytTmoPyEwNuR2TqtCk3s3bKdrF+YSmHrPerryjfcoCiZDrOiQkTkmOGwY+aFSo3yeLpeHjwyeFjPbgLGlvs+tUmJWXbfJe8FVFmI+Wu4yIpCddxm959uuXuH42/0xQWSenEst6zW9jIzFpobpghrFwnlsoDzKTqFpMw/DaAUBwFcf86z1VflpFJ2WBLuZiWcijmuyVGptLE9kZbK2Rh/ehMvUB66xcEWRj/iBbVS4DW+dyMdnI/uUoAwQyuOhuL4Iw/LgxxTg3jGaTm/nSrwYYP+rG6XX/nPZvKHMTaF5mCrAkBodXu+ZebFQFKQYSxvE4rdmFO5YXiyTyMshHTRaMQRg/+RB56IrdB8lSGZJb+ar/L/idJMuA11+FI19ZNLMIvz0cov3B3HFscnF+bzu4eGbqCuTqqc1I+if+YbT6kFFZK+KjAJqijsuYEWt0rnr0z/CEKabJwoMoilWCKh5OGUSYzzrFWe3HSqZVf6wawD4Yn/4n9Xd95TnGdvcgU=
 before_install:
   - gem install bundler -v 1.7 --no-ri --no-rdoc
+  - cp .env.dist .env
