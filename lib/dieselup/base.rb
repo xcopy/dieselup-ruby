@@ -26,6 +26,25 @@ module Dieselup
     end
 
     def post
+      response = request(Dieselup::Url.get(showtopic: ARGV.first))
+      document = Nokogiri::HTML(response.body)
+
+      delete_links = document.css('//a[@href*="javascript:delete_post"]').map { |link|
+        link[:href].match(/'([^']+)/).to_a.last
+      }
+
+      if delete_links.any?
+        request(delete_links.last)
+      end
+
+      params = {Post: 'UP'}
+
+      hidden_inputs = document.css('//form[@name*="REPLIER"]/input[@type*="hidden"]')
+      hidden_inputs.each do |input|
+        params[input[:name]] = input[:value]
+      end
+
+      request(Dieselup::Url::BASE, 'POST', params)
     end
 
     def cookies
@@ -36,7 +55,7 @@ module Dieselup
       uri = URI(url)
 
       http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
+      http.use_ssl = uri.scheme == 'https'
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       if method.upcase == 'POST'
