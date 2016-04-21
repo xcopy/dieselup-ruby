@@ -1,7 +1,10 @@
 module Dieselup
   class Base
+    attr_accessor :cookies
+
     def initialize
       Dotenv.load('.env')
+      @cookies = []
     end
 
     def up!
@@ -25,6 +28,10 @@ module Dieselup
     def post
     end
 
+    def cookies
+      @cookies
+    end
+
     def request(url, method = 'GET', params = {})
       uri = URI(url)
 
@@ -39,7 +46,18 @@ module Dieselup
         request = Net::HTTP::Get.new(uri)
       end
 
-      http.request(request)
+      unless @cookies.empty?
+        request['Cookie'] = @cookies.join(';')
+      end
+
+      response = http.request(request)
+
+      cookies = response.get_fields('set-cookie')
+      cookies.each do |cookie|
+        @cookies.push(cookie.split('; ').first)
+      end
+
+      response
     end
 
 =begin
