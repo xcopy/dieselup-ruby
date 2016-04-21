@@ -1,6 +1,6 @@
 module Dieselup
   class Base
-    attr_accessor :cookies
+    attr_reader :cookies
 
     def initialize
       Dotenv.load('.env')
@@ -45,10 +45,6 @@ module Dieselup
       end
 
       request(Dieselup::Url::BASE, 'POST', params)
-    end
-
-    def cookies
-      @cookies
     end
 
     def request(url, method = 'GET', params = {})
