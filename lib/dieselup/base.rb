@@ -7,19 +7,29 @@ module Dieselup
     end
 
     def up!
-      login
-      post
+      begin
+        login
+        post
+      rescue => e
+        log(e.message, nil, :red)
+      end
     end
 
     def login
+      log('Checking access', :yellow)
+
       response = request(Dieselup::Url::BASE)
       document = Nokogiri::HTML(response.body)
 
       if document.css('div#userlinks').empty?
+        log('Logging in', :yellow)
+
         url = Dieselup::Url.get(act: 'Login', CODE: '01')
         params = {UserName: ENV['USERNAME'], PassWord: ENV['PASSWORD']}
         response = request(url, 'POST', params)
       end
+
+      log('Logged in', :green)
 
       response
     end
@@ -35,6 +45,8 @@ module Dieselup
       }
 
       if delete_links.any?
+        log('Deleting last UP', :yellow)
+
         request(delete_links.last)
       end
 
@@ -45,10 +57,14 @@ module Dieselup
         params[input[:name]] = input[:value]
       end
 
+      log('Posting new UP', :green)
+
       request(Dieselup::Url::BASE, 'POST', params)
     end
 
     def request(url, method = 'GET', params = {})
+      puts Rainbow("#{method} #{url}").color(:silver).bright
+
       uri = URI(url)
 
       http = Net::HTTP.new(uri.host, uri.port)
@@ -82,16 +98,16 @@ module Dieselup
       response
     end
 
-=begin
-    def request(url, method = 'GET', params = {})
-      uri = URI.parse(url)
+    def log(message, *colors)
+      color, background, bright = colors
 
-      if method.upcase == 'POST'
-        Net::HTTP.post_form(uri, params)
-      else
-        Net::HTTP.get_response(uri)
+      rainbow = Rainbow(message.to_s).color(color.try(:to_sym) || :white)
+
+      if background
+        rainbow = rainbow.background(background.to_sym)
       end
+
+      puts rainbow
     end
-=end
   end
 end
