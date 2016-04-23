@@ -36,6 +36,11 @@ Cron task example:
 
 That's it!
 
+Like PHP?
+---------
+
+Sweet. Check out [PHP dieselup](https://github.com/xcopy/dieselup) 
+
 Contributing
 ------------
 
