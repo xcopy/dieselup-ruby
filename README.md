@@ -39,6 +39,11 @@ PASSWORD=your-password
 
 That's it!
 
+Like PHP?
+---------
+
+Sweet. Check out [PHP dieselup](https://github.com/xcopy/dieselup) 
+
 Contributing
 ------------
 
