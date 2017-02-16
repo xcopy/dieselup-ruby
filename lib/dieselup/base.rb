@@ -21,11 +21,19 @@ module Dieselup
       response = request(Dieselup::Url::BASE)
       document = Nokogiri::HTML(response.body)
 
-      if document.css('div#userlinks').empty?
+      if document.css('a#user_link').empty?
         log('Logging in', :yellow)
 
-        url = Dieselup::Url.get(act: 'Login', CODE: '01')
-        params = {UserName: ENV['USERNAME'], PassWord: ENV['PASSWORD']}
+        url = Dieselup::Url.get(app: 'core', module: 'global', section: 'login', do: 'process')
+
+        params = {
+            auth_key: '880ea6a14ea49e853634fbdc5015a024',
+            referer: Dieselup::Url::BASE,
+            ips_username: ENV['USERNAME'],
+            ips_password: ENV['PASSWORD'],
+            rememberMe: 1
+        }
+
         response = request(url, 'POST', params)
       end
 
@@ -40,8 +48,8 @@ module Dieselup
       response = request(Dieselup::Url.get(showtopic: ARGV.first))
       document = Nokogiri::HTML(response.body)
 
-      delete_links = document.css('//a[@href*="javascript:delete_post"]').map { |link|
-        link[:href].match(/'([^']+)/).to_a.last
+      delete_links = document.css('a.delete_post').map { |link|
+        link[:href]
       }
 
       if delete_links.any?
@@ -52,7 +60,7 @@ module Dieselup
 
       params = {Post: 'UP'}
 
-      hidden_inputs = document.css('//form[@name*="REPLIER"]/input[@type*="hidden"]')
+      hidden_inputs = document.css('//form[@id="ips_fastReplyForm"]/input[@type*="hidden"]')
       hidden_inputs.each do |input|
         params[input[:name]] = input[:value]
       end
@@ -84,11 +92,11 @@ module Dieselup
 
       response = http.request(request)
 
+=begin
       document = Nokogiri::HTML(response.body)
-
       errors = document.xpath('//div[@class="errorwrap"]/p')
-
       raise StandardError, errors.first.text if errors.any?
+=end
 
       cookies = response.get_fields('set-cookie')
       cookies.each do |cookie|

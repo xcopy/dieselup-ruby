@@ -30,27 +30,17 @@ describe Dieselup do
     it 'should login successfully' do
       response = @base.login
       document = Nokogiri::HTML(response.body)
-
-      expect(response.code).to eq '200'
-      expect(document.at("p:contains(#{ENV['USERNAME']})")).to_not be_nil
-    end
-
-    it 'should send GET request and get successful response' do
-      response = @base.request(Dieselup::Url::BASE)
-      document = Nokogiri::HTML(response.body)
-
-      expect(response.code).to eq '200'
       expect(document.at("a:contains(#{ENV['USERNAME']})")).to_not be_nil
     end
 
-    it 'should raise error' do
-      @base.cookies = []
-      ENV['USERNAME'] = nil
-      ARGV.clear
+    it 'should send GET request and get HTTP response with status 200 OK' do
+      response = @base.request(Dieselup::Url::BASE)
+      expect(response.code).to eq '200'
+    end
 
-      expect { @base.request(Dieselup::Url.get(showtopic: 1)) }.to raise_error(StandardError)
-      expect { @base.post }.to raise_error(ArgumentError)
-      expect { @base.login }.to raise_error(StandardError)
+    it 'should send GET request and get HTTP response with status 404 Not Found' do
+      response = @base.request(Dieselup::Url.get(showtopic: 1))
+      expect(response.code).to eq '404'
     end
   end
 end
